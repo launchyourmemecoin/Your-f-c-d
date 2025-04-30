@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MemeCoinLauncher</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black: #000000;
+      --logo-blue: #3e6df6;
+      --logo-purple: #845ef7;
+      --gradient-blue: linear-gradient(90deg, #3e6df6, #845ef7);
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: var(--black);
+      color: white;
+      overflow-x: hidden;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 1.2rem 2rem;
+      background-color: rgba(0, 0, 0, 0.95);
+    }
+
+    nav a {
+      text-decoration: none;
+      color: rgba(255, 255, 255, 0.5);
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: var(--logo-blue);
+    }
+
+    .hero {
+      text-align: center;
+      padding: 4rem 1rem 2rem;
+    }
+
+    .hero img.logo {
+      max-width: 140px;
+      height: auto;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-size: 2rem;
+      margin: 0;
+    }
+
+    .hero p {
+      margin-top: 0.75rem;
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .auth-buttons {
+      margin-top: 1.5rem;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .auth-buttons button {
+      background: var(--gradient-blue);
+      color: white;
+      border: none;
+      padding: 0.6rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.3s;
+    }
+
+    .auth-buttons button:hover {
+      opacity: 0.85;
+    }
+
+    .review-section {
+      padding: 3rem 1rem;
+      background-color: #0a0a0a;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .review-card {
+      background: #121212;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 0 10px rgba(183, 140, 244, 0.05);
+    }
+
+    .review-card h3 {
+      margin-top: 0;
+      background: var(--gradient-blue);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .review-card p {
+      color: #ccc;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.4);
+      background-color: #000;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="#">Launch</a>
+    <a href="#">New Coins</a>
+    <a href="#">Trending Coins</a>
+    <a href="#">Holding</a>
+    <a href="#">About Us</a>
+  </nav>
+
+  <section class="hero">
+    <img src="memecoin-logo.webp" alt="MemeCoinLauncher Logo" class="logo" />
+    <h1>Launch Your Meme Coin in Seconds</h1>
+    <p>No code needed – we handle everything from smart contracts to token deployment.</p>
+
+    <div class="auth-buttons">
+      <button onclick="window.location.href='signup.html'">Sign Up</button>
+      <button onclick="window.location.href='login.html'">Login</button>
+    </div>
+  </section>
+
+  <section class="review-section">
+    <div class="review-card">
+      <h3>@CryptoCat</h3>
+      <p>"MemeCoinLauncher made it so easy to launch my token. Loved the interface!"</p>
+    </div>
+    <div class="review-card">
+      <h3>@TokenTom</h3>
+      <p>"Quick, clean, and professional. Everything I needed in one place."</p>
+    </div>
+    <div class="review-card">
+      <h3>@MoonMeme</h3>
+      <p>"Highly recommend! Smooth process and great design."</p>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 MemeCoinLauncher. All rights reserved.
+  </footer>
+</body>
+</html>
