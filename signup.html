@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up | MemeCoinLauncher</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #000;
+      font-family: 'Inter', sans-serif;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 1rem;
+    }
+    .form {
+      background: #111;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(66, 135, 245, 0.3);
+      width: 100%;
+      max-width: 400px;
+    }
+    h2 {
+      margin-bottom: 0.25rem;
+    }
+    .subtitle {
+      font-size: 0.9rem;
+      color: #ccc;
+      margin-bottom: 1.5rem;
+    }
+    input {
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 0.5rem;
+      margin-bottom: 0.25rem;
+      border: none;
+      border-radius: 8px;
+      background: #222;
+      color: white;
+    }
+    .error {
+      color: #ff4b4b;
+      font-size: 0.8rem;
+      margin-bottom: 0.75rem;
+    }
+    button {
+      margin-top: 1rem;
+      background: linear-gradient(to right, #3e6df6, #845ef7);
+      color: white;
+      padding: 0.75rem;
+      width: 100%;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+  </style>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCLIgCLwkL5Jwobq3ljhchk3bmrvLXANyU",
+      authDomain: "meme-coin-launcher.firebaseapp.com",
+      projectId: "meme-coin-launcher",
+      storageBucket: "meme-coin-launcher.firebasestorage.app",
+      messagingSenderId: "996986192295",
+      appId: "1:996986192295:web:1560eb4a0187b345f17682",
+      measurementId: "G-GWGMV383RD"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    window.handleSignUp = async () => {
+      const username = document.getElementById("signup-username").value;
+      const email = document.getElementById("signup-email").value;
+      const password = document.getElementById("signup-password").value;
+      const confirmPassword = document.getElementById("confirm-password").value;
+      const errorMessage = document.getElementById("error-message");
+
+      errorMessage.textContent = "";
+
+      if (!username || !email || !password || !confirmPassword) {
+        errorMessage.textContent = "All fields are required.";
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        errorMessage.textContent = "Passwords do not match.";
+        return;
+      }
+
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        await updateProfile(userCredential.user, {
+          displayName: username
+        });
+        window.location.href = "dashboard.html";
+      } catch (error) {
+        errorMessage.textContent = error.message;
+      }
+    };
+  </script>
+</head>
+<body>
+  <div class="form">
+    <h2>Sign Up</h2>
+    <p class="subtitle">Sign up and get started</p>
+
+    <input type="text" id="signup-username" placeholder="Username" />
+    <input type="email" id="signup-email" placeholder="Email" />
+    <input type="password" id="signup-password" placeholder="Password" />
+    <input type="password" id="confirm-password" placeholder="Confirm Password" />
+    <div id="error-message" class="error"></div>
+    <button onclick="handleSignUp()">Sign Up</button>
+  </div>
+</body>
+</html>
