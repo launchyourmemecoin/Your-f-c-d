@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Withdraw SOL</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0A0A0A;
+      color: white;
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 480px;
+      margin: 20px auto;
+      padding: 24px;
+      background-color: #111;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    }
+
+    h2 {
+      margin-top: 0;
+      margin-bottom: 24px;
+      font-size: 20px;
+      color: #fff;
+      text-align: center;
+    }
+
+    .wallet-info {
+      text-align: right;
+      font-size: 12px;
+      color: #aaa;
+      margin-bottom: 16px;
+    }
+
+    .balance-section {
+      background-color: #1a1a1a;
+      padding: 16px;
+      border-radius: 8px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .balance-amount {
+      font-size: 24px;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .usd-balance {
+      font-size: 14px;
+      color: #888;
+      margin-top: 4px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      background-color: #1f1f1f;
+      color: white;
+      font-family: 'Inter', sans-serif;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      background-color: #5b21b6;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin-top: 8px;
+    }
+
+    button:hover {
+      background-color: #6d28d9;
+    }
+
+    button:disabled {
+      background-color: #333;
+      cursor: not-allowed;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #111;
+      border: 1px solid #5b21b6;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 0 30px rgba(91,33,182,0.3);
+      z-index: 1000;
+      color: white;
+      font-size: 14px;
+      max-width: 80%;
+      text-align: center;
+    }
+
+    .popup h3 {
+      color: #ff5555;
+      margin-top: 0;
+    }
+
+    .popup-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .popup-buttons button {
+      flex: 1;
+      padding: 10px;
+    }
+
+    .popup-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0,0,0,0.8);
+      z-index: 999;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .action-buttons button {
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="wallet-info">
+      Connected: <span>Esushsqu6K3dF99FZHDNeWUZaXhfQQsgQTxXfqRvpfBk (m)</span>
+    </div>
+
+    <div class="balance-section">
+      <div class="balance-amount">0.0 SOL</div>
+      <div class="usd-balance">$0.00</div>
+    </div>
+
+    <h2>Withdraw SOL</h2>
+    
+    <div class="form-group">
+      <label for="wallet">Recipient Wallet Address</label>
+      <input type="text" id="wallet" placeholder="Enter Solana address" />
+    </div>
+    
+    <div class="form-group">
+      <label for="amount">Amount (SOL)</label>
+      <input type="number" id="amount" placeholder="0.0" step="0.1" min="0" />
+    </div>
+
+    <div class="action-buttons">
+      <button onclick="window.location.href='index.html'">Back</button>
+      <button id="withdrawBtn">Withdraw</button>
+    </div>
+  </div>
+
+  <div class="popup-overlay" id="popupOverlay"></div>
+  <div class="popup" id="popup">
+    <h3>Withdrawal Blocked</h3>
+    <p>Withdrawal can't be processed: Wallet not regulated</p>
+    <p>Deposit $500 for security purposes to enable withdrawals</p>
+    <div class="popup-buttons">
+      <button onclick="window.location.href='deposit.html'">Deposit Now</button>
+      <button onclick="closePopup()">Cancel</button>
+    </div>
+  </div>
+
+  <script>
+    function isValidSolanaAddress(address) {
+      return /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(address);
+    }
+
+    document.getElementById("withdrawBtn").addEventListener("click", function() {
+      const wallet = document.getElementById("wallet").value.trim();
+      const amount = parseFloat(document.getElementById("amount").value);
+      
+      // Always show the blocked withdrawal popup
+      document.getElementById("popupOverlay").style.display = "block";
+      document.getElementById("popup").style.display = "block";
+      
+      // Original validation (commented out since we're forcing the popup)
+      /*
+      if (!wallet || !isValidSolanaAddress(wallet)) {
+        alert("Please enter a valid Solana wallet address.");
+        return;
+      }
+
+      if (!amount || amount <= 0) {
+        alert("Please enter a valid withdrawal amount.");
+        return;
+      }
+      */
+    });
+
+    function closePopup() {
+      document.getElementById("popupOverlay").style.display = "none";
+      document.getElementById("popup").style.display = "none";
+    }
+  </script>
+</body>
+</html>
