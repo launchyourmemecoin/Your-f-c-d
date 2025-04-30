@@ -1,12 +1,10 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <title>Token Launcher</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
     body {
       margin: 0;
@@ -23,8 +21,8 @@
     }
 
     .wallet-info {
-      text-align: center;
-      font-size: 14px;
+      text-align: right;
+      font-size: 12px;
       color: #aaa;
       margin-bottom: 10px;
     }
@@ -34,7 +32,7 @@
       padding: 20px;
       border-radius: 12px;
       text-align: center;
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+      margin-bottom: 20px;
     }
 
     .balance-section h2 {
@@ -49,17 +47,17 @@
       color: #ffffff;
     }
 
-    .launches-available {
-      margin-top: 6px;
+    .usd-balance {
       font-size: 14px;
       color: #888;
+      margin-top: 4px;
     }
 
     .action-buttons {
       display: flex;
       gap: 12px;
       justify-content: center;
-      margin-top: 12px;
+      margin-top: 16px;
     }
 
     .action-buttons button {
@@ -77,95 +75,99 @@
       background-color: #6d28d9;
     }
 
-    .launcher {
+    .form-section {
       background-color: #111;
       padding: 20px;
       border-radius: 12px;
-      margin-top: 20px;
+      margin-bottom: 16px;
     }
 
-    .launcher h2 {
-      margin-bottom: 10px;
+    .form-section h2 {
+      margin-top: 0;
+      margin-bottom: 16px;
       font-size: 18px;
       color: #ccc;
     }
 
-    .launcher input, .launcher textarea {
+    .form-section input, 
+    .form-section textarea {
       width: 100%;
-      padding: 10px;
-      margin-bottom: 10px;
+      padding: 12px;
+      margin-bottom: 12px;
       border-radius: 8px;
       border: none;
       background-color: #1f1f1f;
       color: white;
+      font-family: 'Inter', sans-serif;
     }
 
-    .preview-box {
-      background-color: #1a1a1a;
-      padding: 10px;
+    .form-section textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .upload-area {
+      border: 2px dashed #333;
       border-radius: 8px;
-      font-size: 14px;
-      color: #aaa;
-      margin-bottom: 10px;
-    }
-
-    .launcher button {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      background-color: #5b21b6;
-      color: white;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    .launcher button:hover {
-      background-color: #6d28d9;
-    }
-
-    /* Modal Styles */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      z-index: 999;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .modal {
-      background-color: #111;
-      padding: 24px;
-      border-radius: 12px;
-      max-width: 90%;
+      padding: 20px;
       text-align: center;
-      box-shadow: 0 0 20px rgba(255,255,255,0.1);
-    }
-
-    .modal h3 {
       margin-bottom: 12px;
-      color: #fff;
-      font-size: 18px;
+      cursor: pointer;
     }
 
-    .modal p {
-      margin-bottom: 20px;
+    .upload-area:hover {
+      border-color: #5b21b6;
+    }
+
+    .option-card {
+      background-color: #1a1a1a;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .option-card:hover {
+      background-color: #222;
+    }
+
+    .option-card.selected {
+      background-color: #5b21b6;
+    }
+
+    .option-card h3 {
+      margin-top: 0;
+      margin-bottom: 8px;
+    }
+
+    .option-card p {
+      margin-bottom: 0;
       color: #aaa;
       font-size: 14px;
     }
 
-    .modal-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
+    .cost-tag {
+      float: right;
+      background-color: #333;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 14px;
     }
 
-    .modal-buttons button {
-      padding: 10px 20px;
+    .selected .cost-tag {
+      background-color: #fff;
+      color: #5b21b6;
+    }
+
+    .navigation {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 24px;
+    }
+
+    .navigation button {
+      padding: 12px 24px;
       border: none;
       border-radius: 8px;
       background-color: #5b21b6;
@@ -175,44 +177,29 @@
       transition: background 0.3s;
     }
 
-    .modal-buttons button:hover {
+    .navigation button:hover {
       background-color: #6d28d9;
     }
 
-    /* Spinner animation */
-    .spinner {
-      display: none;
-      margin: 10px auto;
-      border: 4px solid #333;
-      border-top: 4px solid #5b21b6;
-      border-radius: 50%;
-      width: 32px;
-      height: 32px;
-      animation: spin 1s linear infinite;
+    .navigation button:disabled {
+      background-color: #333;
+      cursor: not-allowed;
     }
 
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    .referral {
+    .balance-display {
       text-align: center;
       font-size: 14px;
-      margin-top: 24px;
-      background-color: #111;
-      padding: 12px;
-      border-radius: 8px;
+      margin: 16px 0;
+      color: #888;
     }
 
-    .referral input {
-      width: 100%;
-      margin-top: 8px;
-      padding: 8px;
-      background: #1f1f1f;
-      color: white;
-      border: none;
-      border-radius: 8px;
+    .balance-display span {
+      color: #00ffcc;
+      font-weight: 600;
+    }
+
+    .hidden {
+      display: none;
     }
   </style>
 </head>
@@ -220,73 +207,88 @@
 
   <div class="container">
     <div class="wallet-info">
-      Connected Wallet: <span style="color: #00ffcc;">0x2f3A...9cE3</span>
+      Connected: <span>Esushsqu6K3dF99FZHDNeWUZaXhfQQsgQTxXfqRvpfBk (m)</span>
     </div>
 
     <div class="balance-section">
       <h2>Available Balance</h2>
-      <div class="balance-amount"-54.00</div>
-      <div class="launches-available">Launched coins: 1</div>
+      <div class="balance-amount">0.0 SOL</div>
+      <div class="usd-balance">$0.00</div>
       <div class="action-buttons">
         <button onclick="window.location.href='deposit.html'">Deposit</button>
         <button onclick="alert('Withdraw functionality coming soon!')">Withdraw</button>
       </div>
     </div>
 
-    <div class="launcher">
-      <h2>Create Your Meme Coin</h2>
-      <input type="text" id="coinName" placeholder="Coin Name" required oninput="updatePreview()" />
-      <input type="text" id="coinSymbol" placeholder="Symbol" required oninput="updatePreview()" />
-      <input type="number" placeholder="Total Supply" required />
-      <textarea rows="3" placeholder="Description" required></textarea>
-
-      <div class="preview-box" id="previewBox">
-        Coin Preview: <br />
-        Name: <em>None</em> | Symbol: <em>N/A</em>
+    <!-- Token Creation Form -->
+    <div class="form-section">
+      <h2>Create Your Token</h2>
+      <input type="text" placeholder="Token Name" required />
+      <input type="text" placeholder="Token Symbol" required />
+      
+      <h2>Token Image</h2>
+      <div class="upload-area">
+        Click to upload or drag and drop<br />
+        PNG or JPG. Max 5MB.
       </div>
 
-      <button onclick="launchCoin()">Launch to Phantom Wallet</button>
-      <div class="spinner" id="spinner"></div>
-    </div>
+      <h2>Token Decimals</h2>
+      <input type="number" value="9" required />
+      
+      <h2>Total Supply</h2>
+      <input type="text" value="1000000000" required />
+      
+      <h2>Token Description</h2>
+      <textarea placeholder="Enter token description"></textarea>
 
-    <div class="referral">
-      Invite friends & earn bonus launches!<br />
-      Your Code:
-      <input type="text" value="MEME-4U-2025" readonly onclick="this.select(); document.execCommand('copy'); alert('Referral copied!')" />
-    </div>
-  </div>
+      <h2>Token Authorities</h2>
+      <div class="option-card">
+        <h3>Information</h3>
+        <p>Change the information of the creator in the metadata.</p>
+        <span class="cost-tag">+0.1 SOL</span>
+      </div>
 
-  <!-- Modal -->
-  <div class="modal-overlay" id="bonusModal">
-    <div class="modal">
-      <h3>🎁 100% Bonus Offer!</h3>
-      <p>Deposit $50 now and launch <strong>2 meme coins</strong> instantly. Limited time only!</p>
-      <div class="modal-buttons">
-        <button onclick="window.location.href='deposit.html'">Deposit</button>
-        <button onclick="document.getElementById('bonusModal').style.display='none'">Later</button>
+      <div class="option-card selected">
+        <h3>Freeze Authority</h3>
+        <p>Allows you to freeze token of holders.</p>
+        <span class="cost-tag">+0.1 SOL</span>
+      </div>
+
+      <div class="option-card selected">
+        <h3>Mint Authority</h3>
+        <p>Allows you to mint more supply of your token.</p>
+        <span class="cost-tag">+0.1 SOL</span>
+      </div>
+
+      <div class="option-card selected">
+        <h3>Update Authority</h3>
+        <p>Allows you to update the token metadata.</p>
+        <span class="cost-tag">+0.1 SOL</span>
+      </div>
+
+      <div class="balance-display">
+        Total Cost: <span>0.3 SOL</span>
+      </div>
+
+      <div class="navigation">
+        <button onclick="window.location.href='deposit.html'">Create Token</button>
       </div>
     </div>
   </div>
 
   <script>
-    // Show modal after 6 seconds
-    setTimeout(() => {
-      document.getElementById('bonusModal').style.display = 'flex';
-    }, 6000);
+    // Toggle option cards
+    document.querySelectorAll('.option-card').forEach(card => {
+      card.addEventListener('click', function() {
+        this.classList.toggle('selected');
+        updateTotalCost();
+      });
+    });
 
-    function updatePreview() {
-      const name = document.getElementById('coinName').value || 'None';
-      const symbol = document.getElementById('coinSymbol').value || 'N/A';
-      document.getElementById('previewBox').innerHTML = `Coin Preview: <br/> Name: <em>${name}</em> | Symbol: <em>${symbol}</em>`;
-    }
-
-    function launchCoin() {
-      const spinner = document.getElementById('spinner');
-      spinner.style.display = 'block';
-      setTimeout(() => {
-        spinner.style.display = 'none';
-        window.location.href = 'deposit.html';
-      }, 1500);
+    function updateTotalCost() {
+      const selectedCount = document.querySelectorAll('.option-card.selected').length;
+      const totalCost = 0.1 * selectedCount;
+      document.querySelector('.balance-display span').textContent = `${totalCost.toFixed(1)} SOL`;
     }
   </script>
 </body>
